@@ -1,0 +1,216 @@
+<div class="container">
+  <h2>إنشاء شكاية</h2>
+
+  <form [formGroup]="reclamationForm" (ngSubmit)="submitForm()">
+    <div class="mb-3">
+      <label for="pieceJointeReclamation">ملف الشكاية :</label>
+      <input type="file" id="pieceJointeReclamation" class="form-control" (change)="onFileSelected($event)">
+    </div>
+    <div class="ms-2">
+      <button type="button" class="btn btn-secondary btn-sm" (click)="convertImageToText()">
+        تحويل الصورة إلى نص
+      </button>
+    </div>
+    <!-- نافذة لعرض النص المستخرج -->
+    <div class="modal fade" id="ocrModal" tabindex="-1" aria-labelledby="ocrModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ocrModalLabel">نص الصورة</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+          </div>
+          <div class="modal-body">
+            <textarea class="form-control" rows="10" readonly>{{ ocrText }}</textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="copyOcrText()">نسخ النص</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- رقم التسجيل والمرجع -->
+    <div class="mb-3">
+      <label for="numInscription">رقم التسجيل :</label>
+      <input type="text" id="numInscription" dir="ltr" class="form-control" formControlName="numInscription" [attr.disabled]="true">
+    </div>
+
+    <div class="mb-3">
+      <label for="referenceBo">مرجع الاستلام :</label>
+      <input type="text" id="referenceBo" dir="ltr" class="form-control" formControlName="referenceBo">
+    </div>
+    <div class="mb-3">
+      <label for="dateDepot">تاريخ الإيداع :</label>
+      <input type="date" id="dateDepot" class="form-control" formControlName="dateDepot">
+    </div>
+    <div class="mb-3">
+      <label for="annee">السنة :</label>
+      <input type="number" id="annee" class="form-control" formControlName="annee">
+    </div>
+
+
+    <!-- الأقسام المطوية -->
+    <div class="accordion" id="reclamationAccordion">
+      <!-- المعلومات الشخصية -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+            🧑 المعلومات الشخصية
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show">
+          <div class="accordion-body">
+            <div class="mb-3">
+              <label for="typeIdentifiant">نوع المعرف :</label>
+              <select id="typeIdentifiant" class="form-select" formControlName="typeIdentifiant">
+                <option value="CIN">بطاقة الهوية</option>
+                <option value="Passeport">جواز السفر</option>
+                <option value="Carte de séjour">بطاقة الإقامة</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="identifiant">المعرف :</label>
+              <input type="text" id="identifiant" class="form-control" formControlName="identifiant" required (blur)="checkReclamations()">
+              <div *ngIf="reclamationCount > 0" class="mt-2">
+                <a href="javascript:void(0)" (click)="openReclamationsModal()">
+                  عدد الطلبات الواردة لهذا الشخص: {{ reclamationCount }}
+                </a>
+              </div>
+            
+
+              
+
+
+            </div>
+            <div class="mb-3">
+              <label for="nomComplet">الاسم الكامل :</label>
+              <input type="text" id="nomComplet" class="form-control" formControlName="nomComplet" required>
+            </div>
+    <!-- الحقول الإضافية -->
+    <div class="mb-3">
+      <label for="adresse">العنوان :</label>
+      <input type="text" id="adresse" class="form-control" formControlName="adresse">
+    </div>
+
+    <div class="mb-3">
+      <label for="telephone">رقم الهاتف :</label>
+      <input type="tel" id="telephone" formControlName="telephone" class="form-control" #telephoneInput>
+      <!-- عرض رسالة الخطأ إذا كان التنسيق غير صحيح -->
+      <div *ngIf="reclamationForm.get('telephone')?.invalid && (reclamationForm.get('telephone')?.touched || reclamationForm.get('telephone')?.dirty)" class="text-danger">
+        تنسيق الهاتف غير صحيح!
+      </div>
+    </div>
+
+ 
+          </div>
+        </div>
+      </div>
+
+      <!-- تفاصيل الشكاية -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+            📄 تفاصيل الشكاية
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse show">
+          <div class="accordion-body">
+            <div class="mb-3">
+              <label for="commune">النفوذ الترابي :</label>
+              <select id="commune" class="form-select" formControlName="commune">
+                <option *ngFor="let commune of communes" [value]="commune">{{ commune }}</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="typeRequete">نوع الطلب :</label>
+              <select id="typeRequete" class="form-select" formControlName="typeRequete">
+                <option *ngFor="let typeRequete of typeRequetes" [value]="typeRequete.id">{{ typeRequete.nomLangue2 }}</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="typeReclamation">نوع الشكاية :</label>
+              <select id="typeReclamation" class="form-select" formControlName="typeReclamation">
+                <option *ngFor="let typeReclamation of typeReclamations" [value]="typeReclamation.id">{{ typeReclamation.nomLangue2 }}</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="sourceReclamation">مصدر الشكاية :</label>
+              <select id="sourceReclamation" class="form-select" formControlName="sourceReclamation">
+                <option *ngFor="let sourceReclamation of sourceReclamations" [value]="sourceReclamation.id">{{ sourceReclamation.nomLangue2 }}</option>
+              </select>
+            </div>            
+            <div class="mb-3">
+              <label for="objetReclamation">موضوع الشكاية :</label>
+              <textarea id="objetReclamation" class="form-control" formControlName="objetReclamation"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="objetReclamation">تعليمات سيد العامل :</label>
+              <textarea id="instructionsGouverneur" class="form-control" formControlName="instructionsGouverneur"></textarea>
+            </div>           
+            <div class="mb-3">
+              <label for="observation1">ملاحظة :</label>
+              <input type="text" id="observation1" class="form-control" formControlName="observation1">
+            </div>
+        
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3" [disabled]="reclamationForm.invalid">
+      📨 إرسال الشكاية
+    </button>
+  </form>
+
+  <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+</div>
+
+<div class="modal fade" id="reclamationsModal" tabindex="-1" aria-labelledby="reclamationsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl"> <!-- Utilisation de modal-xl pour agrandir -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reclamationsModalLabel">الطلبات الواردة لهذا الشخص</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+      </div>
+      <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>رقم التسجيل</th>
+                <th>تاريخ الإيداع</th>
+                <th>الاسم الكامل</th>
+                <th>موضوع الشكاية</th>
+                <th>نوع الشكاية</th>
+                <th>نوع الطلب</th>
+                <th>إرسال الجهة المختصة</th>
+                <th>عودة الجهة المختصة</th>
+                <th>إرسال الرد</th>
+                <th>تعليمات</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rec of reclamations">
+                <td>{{ rec.numInscription }}</td>
+                <td>{{ rec.dateDepot | date:'dd/MM/yyyy' }}</td>
+                <td>{{ rec.nomComplet }}</td>
+                <td>{{ rec.objetReclamation }}</td>
+                <td>{{ rec.typeReclamationLabel }}</td>
+                <td>{{ rec.typeRequeteLabel }}</td>
+                <td>{{ rec.flagEnvoiAutoriteText }}</td>
+                <td>{{ rec.flagRetourAutoriteText }}</td>
+                <td>{{ rec.flagEnvoiReclamantText }}</td>
+                <td>{{ rec.instructionsGouverneur }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<div class="container">
+    <h2>إدارة المستويات</h2>
+    
+    <!-- Formulaire de recherche -->
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <input type="text" [(ngModel)]="searchKeyword" placeholder="بحث" class="form-control">
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-primary" (click)="searchNiveaux()">بحث</button>
+      </div>
+      <div class="col-md-6 text-end">
+        <button class="btn btn-success" (click)="openCreateNiveauModal()">إضافة مستوى</button>
+      </div>
+    </div>
+    
+    <!-- Tableau des niveaux -->
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>الاسم </th>
+          <th>الإجراءات</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let niveau of niveaux">
+          <td>{{ niveau.description }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="openEditNiveauModal(niveau)">تعديل</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteNiveau(niveau.id)">حذف</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <!-- Modale de création -->
+    <div class="modal fade" id="createNiveauModal" tabindex="-1" aria-labelledby="createNiveauModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createNiveauModalLabel">إضافة مستوى</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+          </div>
+          <div class="modal-body">
+            <form (ngSubmit)="createNiveau()">
+              <div class="mb-3">
+                <label for="description" class="form-label">الاسم  :</label>
+                <input type="text" id="description" [(ngModel)]="newNiveau.description" name="description" class="form-control" required>
+              </div>
+              <button type="submit" class="btn btn-primary">حفظ</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Modale de modification -->
+    <div class="modal fade" id="editNiveauModal" tabindex="-1" aria-labelledby="editNiveauModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editNiveauModalLabel">تعديل المستوى</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+          </div>
+          <div class="modal-body">
+            <form (ngSubmit)="updateNiveau()">
+              <div class="mb-3">
+                <label for="editdescription" class="form-label">الاسم  :</label>
+                <input type="text" id="editdescription" [(ngModel)]="selectedNiveau.description" name="description" class="form-control" required>
+              </div>
+              <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  

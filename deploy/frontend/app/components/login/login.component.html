@@ -1,0 +1,33 @@
+<!-- login.component.html -->
+<div class="login-page">
+    <!-- En-tête de la page -->
+    <header style="position: relative; width: 100%; padding: 20px 40px; box-sizing: border-box;">
+      <div style="text-align: center;">
+        <h1 style="font-size: 3em; margin: 0;">تطبيق إدارة الشكايات</h1>
+      </div>
+      <div style="position: absolute; top: 20px; right: 40px;">
+        <img src="assets/logo.jpg" alt="Logo" style="max-height: 300px;">
+      </div>
+    </header>
+    
+    <!-- Conteneur de la forme de connexion centrée -->
+    <div class="login-form-container" style="display: flex; justify-content: center; align-items: center; height: calc(100vh - 140px);">
+      <div class="modal-content" style="width: 100%; max-width: 400px; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        <h5 class="modal-title" style="text-align: center; margin-bottom: 20px;">تسجيل الدخول</h5>
+        <form (ngSubmit)="authenticate()">
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Login" [(ngModel)]="login" name="login">
+          </div>
+          <div class="mb-3">
+            <input type="password" class="form-control" placeholder="Mot de passe" [(ngModel)]="pass" name="pass">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">تسجيل الدخول</button>
+        </form>
+        <p class="text-danger" *ngIf="errorMessage" style="text-align: center; margin-top: 10px;">{{ errorMessage }}</p>
+        <div style="text-align: center; margin-top: 10px;">
+          <a routerLink="/reset-password">نسيت كلمة المرور؟</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  

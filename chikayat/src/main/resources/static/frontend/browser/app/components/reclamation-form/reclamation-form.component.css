@@ -1,0 +1,7 @@
+input {
+    text-align: right;
+}
+#reclamationsModal .modal-body {
+    max-height: 500px;
+    overflow-y: auto;
+  }

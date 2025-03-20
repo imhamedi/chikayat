@@ -1,0 +1,21 @@
+.master-row td{
+    background-color: #f0f8ff; /* Couleur élégante (AliceBlue) */
+    font-weight: bold;
+  }
+  
+  .detail-row td {
+    background-color: #ffffff; /* Fond blanc pour les détails */
+    padding-left: 30px; /* Indentation pour les détails */
+  }
+  
+  .detail-row table {
+    border: 2px solid #000; /* Encadrement épais en noir */
+    border-radius: 5px;     /* Optionnel : coins arrondis */
+  }
+  
+  .detail-row table th,
+  .detail-row table td {
+    border: 1px solid #000; /* Bordures pour les cellules */
+    padding: 5px;
+  }
+  

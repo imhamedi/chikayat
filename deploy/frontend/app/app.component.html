@@ -1,0 +1,8 @@
+<app-header *ngIf="isAuthenticated"></app-header>
+<div class="d-flex the-home" *ngIf="isAuthenticated">
+  <app-sidebar *ngIf="isAuthenticated"></app-sidebar>
+  <div class="flex-grow-1">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<app-login *ngIf="!isAuthenticated && !isResetPasswordPage"></app-login>

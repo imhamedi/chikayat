@@ -1,0 +1,109 @@
+<div class="container">
+    <h2>الإرسال إلى السلطة
+
+
+
+
+
+
+</h2>
+    
+    <!-- Table des réclamations filtrées -->
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+            <th>ID</th>
+            <th>تاريخ الإيداع</th>
+            <th>رقم التسجيل</th>
+            <th>المعرف</th>
+            <th>الاسم الكامل</th>
+            <th>مصدر الشكاية</th>
+            <th>نوع الشكاية</th>
+            <th>موضوع الشكاية</th>
+            <th>تعليمات المحافظ</th>
+            <th>نوع الطلب</th>
+            <th>المُرسَل إليه</th>
+            <th>إجراءات</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rec of reclamations">
+            <td>{{ rec.id }}</td>
+            <td>{{ rec.dateDepot  | date:'dd/MM/yyyy'  }}</td>
+            <td>{{ rec.numInscription }}</td>
+            <td>{{ rec.identifiant }}</td>
+            <td>{{ rec.nomComplet }}</td>
+            <td>{{ rec.sourceReclamation?.nomLangue2 }}</td>
+            <td>{{ rec.typeReclamation?.nomLangue2 }}</td>
+            <td>{{ rec.objetReclamation }}</td>
+            <td>{{ rec.instructionsGouverneur }}</td>
+            <td>{{ rec.typeRequete?.nomLangue2 }}</td>
+            <td>{{ rec.destinataire }}</td>
+          <td>
+            <!-- Bouton avec tooltip ou hover "Envoi Autorité" -->
+            <button class="btn btn-primary" (click)="openModal(rec)" title="Envoi Autorité">إرسال</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Modal pour saisir la voie et la référence -->
+    <div class="modal fade" id="envoiAutoriteModal" tabindex="-1" role="dialog" aria-labelledby="envoiAutoriteModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="envoiAutoriteModalLabel">الإرسال إلى السلطة
+
+
+
+
+
+
+</h5>
+            <button type="button" class="close" (click)="cancel()" aria-label="Fermer">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Sélection de la voie -->
+            <div class="form-group">
+              <label for="typeDestinataire">نوع الجهة :</label>
+              <ng-select
+              [items]="typeDestinataires"
+              bindLabel="nomLangue2"
+              bindValue="id"
+              placeholder="-- اختر --"
+              [(ngModel)]="selectedTypeDestinataire"
+              name="typeDestinataire"
+              [searchable]="true">
+              
+            </ng-select>
+                      </div>
+                        <!-- Saisie de la référence -->
+            <div class="form-group mt-2">
+              <label for="referenceInput">المرجع</label>
+              <input type="text" id="referenceInput" class="form-control" [(ngModel)]="referenceEnvoi" name="referenceEnvoi">
+            </div>
+<!-- Saisie de la date d'الإرسال إلى السلطة-->
+<div class="form-group mt-2">
+  <label for="dateEnvoiAutorite">تاريخ الإرسال إلى السلطة</label>
+  <input type="date"
+         id="dateEnvoiAutorite"
+         class="form-control"
+         [(ngModel)]="dateEnvoiAutorite"
+         name="dateEnvoiAutorite"
+         dir="rtl">
+</div>
+
+            <!-- Message d'information -->
+            <div *ngIf="message" class="alert alert-info mt-2">{{ message }}</div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="cancel()">إلغاء</button>
+            <button type="button" class="btn btn-primary" (click)="submitEnvoi()">تأكيد</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

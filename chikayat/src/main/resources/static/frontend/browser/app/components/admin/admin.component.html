@@ -1,0 +1,151 @@
+<div class="container">
+    <h2>إدارة المستخدمين</h2>
+
+    <!-- 🔎 Formulaire de recherche -->
+    <div class="row">
+        <div class="col-md-3"><input type="text" [(ngModel)]="filters.nom" class="form-control" placeholder="Nom"></div>
+        <div class="col-md-3"><input type="text" [(ngModel)]="filters.email" class="form-control" placeholder="Email"></div>
+        <div class="col-md-3"><input type="text" [(ngModel)]="filters.login" class="form-control" placeholder="Login"></div>
+        <div class="col-md-3">
+            <button class="btn btn-primary" (click)="searchUsers()">بحث</button>
+            <button class="btn btn-success" (click)="openCreateUserModal()">إضافة </button>
+
+        </div>
+    </div>
+
+    <!-- 📝 Liste des utilisateurs -->
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>الاسم</th>
+                <th>البريد الإلكتروني</th>
+                <th>اسم المستخدم</th>
+                <th>الدور</th>
+                <th>الإجراءات</th>
+                    </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of users">
+                <td>{{ user.nom }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.login }}</td>
+                <td>{{ user.role }}</td>
+                <td>
+                    <button class="btn btn-info btn-sm" (click)="viewUser(user)">👁️</button>
+                    <button class="btn btn-warning btn-sm" (click)="editUser(user)">✏️</button>
+                    <button class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">🗑️</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div *ngIf="isViewingUser" class="modal fade show d-block" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">👁️ عرض المستخدم</h5>
+          <button type="button" class="btn-close" (click)="isViewingUser = false"></button>
+        </div>
+        <div class="modal-body">
+          <label> : الاسم</label>
+          <input type="text" class="form-control" [value]="selectedUser.nom" disabled />
+          
+          <label> :  البريد الإلكتروني</label>
+          <input type="text" class="form-control" [value]="selectedUser.email" disabled />
+  
+          <label> : اسم المستخدم</label>
+          <input type="text" class="form-control" [value]="selectedUser.login" disabled />
+  
+          <label> : الدور</label>
+          <input type="text" class="form-control" [value]="selectedUser.role" disabled />
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="isViewingUser = false">إغلاق</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+<!-- 📝 MODAL DE MODIFICATION -->
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">تعديل المستخدم</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer" (click)="isEditingUser = false"></button>
+        </div>
+        <div class="modal-body">
+          <form *ngIf="selectedUser" (ngSubmit)="saveUser()">
+            <div class="mb-3">
+              <label for="nom" class="form-label">الاسم</label>
+              <input type="text" class="form-control" id="nom" [(ngModel)]="selectedUser.nom" name="nom" required>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">البريد الإلكتروني</label>
+              <input type="email" class="form-control" id="email" [(ngModel)]="selectedUser.email" name="email" required>
+            </div>
+            <div class="mb-3">
+              <label for="role" class="form-label">الدور</label>
+              <select class="form-select" id="role" [(ngModel)]="selectedUser.role" name="role">
+                <option value="ADMIN">مسؤول </option>
+                <option value="UTILISATEUR">مستخدم</option>
+                <option value="CONSULTATION">مراجعة</option>
+              </select>
+            </div>
+            <div class="mb-3 text-center">
+              <span *ngIf="modalMessage" class="alert alert-info">{{ modalMessage }}</span>
+            </div>
+            <button type="submit" class="btn btn-primary">حفظ</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+<!-- Modal Création Utilisateur -->
+<div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="createUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createUserModalLabel">➕  إنشاء مستخدم جديد
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="createUser()">
+            <div class="mb-3">
+              <label for="nom" class="form-label">الاسم</label>
+              <input type="text" class="form-control" id="nom" [(ngModel)]="newUser.nom" name="nom" required>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label"> البريد الإلكتروني</label>
+              <input type="email" class="form-control" id="email" [(ngModel)]="newUser.email" name="email" required>
+            </div>
+            <div class="mb-3">
+              <label for="login" class="form-label">اسم المستخدم</label>
+              <input type="text" class="form-control" id="login" [(ngModel)]="newUser.login" name="login" required>
+            </div>
+            <div class="mb-3">
+              <label for="role" class="form-label">الدور</label>
+              <select class="form-select" id="role" [(ngModel)]="newUser.role" name="role">
+                <option value="ADMIN">مسؤول </option>
+                <option value="UTILISATEUR">مستخدم</option>
+                <option value="CONSULTATION">مراجعة</option>
+              </select>
+            </div>
+            <div class="mb-3 text-center">
+              <span *ngIf="modalMessage" class="alert alert-info">{{ modalMessage }}</span>
+            </div>
+            <button type="submit" class="btn btn-primary">إنشاء</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+      
+
+  

@@ -1,0 +1,75 @@
+/* .profile-dropdown {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+} */
+
+.profile-icon img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #ddd;
+  transition: transform 0.2s;
+}
+
+.profile-icon:hover img {
+  transform: scale(1.1);
+}
+
+.dropdown-menu {
+  min-width: 160px;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-item {
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: lightgray;
+}
+
+.custom-dropdown {
+  transform: translateX(-100px); /* Ajuste cette valeur si besoin */
+}
+.profile-icon img {
+  width: 60px;  /* Taille fixe */
+  height: 60px;
+  object-fit: cover; /* Pour éviter la déformation */
+  border-radius: 50%;
+}
+
+/* Supprimez ou commentez cette règle si vous utilisez flexbox */
+/* .profile-dropdown {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+} */
+
+.logo-section img {
+  height: 50px; /* ajustez la hauteur selon vos besoins */
+}
+.profile-dropdown {
+  position: relative;
+}
+
+.profile-dropdown .dropdown-menu {
+  position: absolute;
+  top: 100%;          /* en dessous du bouton */
+  left: 0;            /* positionné au bord gauche du conteneur */
+  transform: translateX(30%); /* décalage vers la droite de 100% de la largeur du conteneur */
+  margin-top: 0.5rem; /* ajustez si nécessaire */
+  z-index: 1000;
+}
+
+header, .profileDropdown {
+  background-color: grey;
+}
+
+[dir="rtl"] .dropdown-toggle::after {
+  margin-left: 0.5rem; /* espace entre l'image et la flèche */
+  margin-right: 0;
+}

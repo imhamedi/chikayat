@@ -1,0 +1,19 @@
+<header class="d-flex justify-content-between align-items-center p-2">
+  <!-- Profil (affiché à gauche en RTL) -->
+  <div class="profile-section order-last">
+    <div class="dropdown profile-dropdown">
+      <button class="btn dropdown-toggle profile-icon" type="button" id="profileDropdown" (click)="toggleDropdown()">
+        <img [src]="profilePicture" alt="Image du profil" class="rounded-circle" />
+      </button>
+      <ul class="dropdown-menu custom-dropdown profileDropdown" [class.show]="dropdownOpen" aria-labelledby="profileDropdown" >
+        <li><a class="dropdown-item" (click)="goToProfile()">👤 الملف الشخصي</a></li>
+        <li><a class="dropdown-item" (click)="logout()">🚪 تسجيل الخروج</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Logo (affiché à droite en RTL) -->
+  <div class="logo-section order-first">
+    <img src="assets/logo.png" alt="Logo de l'application" class="app-logo">
+  </div>
+</header>

@@ -1,0 +1,539 @@
+<div class="container my-4">
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">إدارة الشكايات</h3>
+      </div>
+      <div class="card-body">
+        <!-- نموذج البحث -->
+        <form [formGroup]="searchForm" (ngSubmit)="searchReclamationsPage()">
+          <div class="row g-3">
+            <!-- تاريخ الإيداع -->
+            <div class="col-md-6">
+              <label class="form-label">تاريخ الإيداع (من - إلى)</label>
+              <div class="input-group">
+                <input type="date" formControlName="dateDepotStart" class="form-control" />
+                <input type="date" formControlName="dateDepotEnd" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-6">
+                <label for="sourceReclamation">مصدر الشكاية :</label>
+                <select id="sourceReclamation" class="form-select" formControlName="sourceReclamation">
+                    <option value="">-- اختر --</option> 
+                  <option *ngFor="let sourceReclamation of sourceReclamations" [value]="sourceReclamation.id">{{ sourceReclamation.nomLangue2 }}</option>
+                </select>
+                </div>            
+            <!-- رقم التسجيل -->
+            <div class="col-md-4">
+              <label class="form-label">رقم التسجيل</label>
+              <input type="text" formControlName="numInscription" class="form-control" />
+            </div>
+            <!-- المرجع BO -->
+            <div class="col-md-4">
+              <label class="form-label">المرجع BO</label>
+              <input type="text" formControlName="referenceBo" class="form-control" />
+            </div>
+            <!-- المعرف -->
+            <div class="col-md-4">
+              <label class="form-label">المعرف(بطاقة الهوية الوطنية، جواز السفر...)</label>
+              <input type="text" formControlName="identifiant" class="form-control" />
+            </div>
+            <!-- الاسم الكامل -->
+            <div class="col-md-4">
+              <label class="form-label">الاسم الكامل</label>
+              <input type="text" formControlName="nomComplet" class="form-control" />
+            </div>
+            <!-- النفوذ الترابي -->
+            <div class="col-md-4">
+              <label class="form-label">النفوذ الترابي</label>
+              <select formControlName="commune" class="form-select">
+                <option value="">-- اختر --</option>
+                <option *ngFor="let com of communes" [value]="com">{{ com }}</option>
+              </select>
+            </div>
+            <!-- نوع الشكاية -->
+            <div class="col-md-4">
+              <label class="form-label">نوع الشكاية</label>
+              <select formControlName="typeReclamation" class="form-select">
+                <option value="">-- اختر --</option>
+                <option *ngFor="let type of typeReclamations" [value]="type.id">{{ type.nomLangue2 }}</option>
+              </select>
+            </div>
+            <!-- موضوع الشكاية -->
+            <div class="col-md-4">
+              <label class="form-label">موضوع الشكاية</label>
+              <input type="text" formControlName="objetReclamation" class="form-control" />
+            </div>
+            <!-- السنة -->
+            <div class="col-md-4">
+              <label class="form-label">السنة</label>
+              <input type="number" formControlName="annee" class="form-control" />
+            </div>
+            <!-- إرسال إلى السلطة -->
+            <div class="col-md-4">
+              <div class="form-check">
+                <input type="checkbox" formControlName="flagEnvoiAutorite" class="form-check-input" id="flagEnvoiAutorite" />
+                <label class="form-check-label" for="flagEnvoiAutorite">تم الإرسال إلى السلطة؟</label>
+              </div>
+            </div>
+            <!-- تاريخ إرسال إلى السلطة -->
+            <div class="col-md-6">
+              <label class="form-label">تاريخ إرسال إلى السلطة (من - إلى)</label>
+              <div class="input-group">
+                <input type="date" formControlName="dateEnvoiAutoriteStart" class="form-control" />
+                <input type="date" formControlName="dateEnvoiAutoriteEnd" class="form-control" />
+              </div>
+            </div>
+            <!-- طريقة إرسال إلى السلطة -->
+            <div class="col-md-4">
+              <label class="form-label">طريقة إرسال إلى السلطة</label>
+              <select formControlName="voieEnvoiAutorite" class="form-select">
+                <option value="">-- اختر --</option>
+                <option *ngFor="let voie of voieReponses" [value]="voie.id">{{ voie.nomLangue2 }}</option>
+              </select>
+            </div>
+            <!-- مرجع إرسال إلى السلطة -->
+            <div class="col-md-4">
+              <label class="form-label">مرجع إرسال إلى السلطة</label>
+              <input type="text" formControlName="referenceEnvoiAutorite" class="form-control" />
+            </div>
+            <!-- عودة من السلطة -->
+            <div class="col-md-4">
+              <div class="form-check">
+                <input type="checkbox" formControlName="flagRetourAutorite" class="form-check-input" id="flagRetourAutorite" />
+                <label class="form-check-label" for="flagRetourAutorite">تم تلقي الرد من السلطة؟</label>
+              </div>
+            </div>
+            <!-- تاريخ عودة من السلطة -->
+            <div class="col-md-6">
+              <label class="form-label">تاريخ تلقي الرد من السلطة (من - إلى)</label>
+              <div class="input-group">
+                <input type="date" formControlName="dateRetourAutoriteStart" class="form-control" />
+                <input type="date" formControlName="dateRetourAutoriteEnd" class="form-control" />
+              </div>
+            </div>
+            <!-- طريقة عودة من السلطة -->
+            <div class="col-md-4">
+              <label class="form-label">طريقة تلقي الرد من السلطة</label>
+              <select formControlName="voieRetourAutorite" class="form-select">
+                <option value="">-- اختر --</option>
+                <option *ngFor="let voie of voieReponses" [value]="voie.id">{{ voie.nomLangue2 }}</option>
+              </select>
+            </div>
+            <!-- مرجع عودة من السلطة -->
+            <div class="col-md-4">
+              <label class="form-label">مرجع ردالسلطة</label>
+              <input type="text" formControlName="referenceRetourAutorite" class="form-control" />
+            </div>
+            <!-- الرد على الشاكي -->
+            <div class="col-md-4">
+              <div class="form-check">
+                <input type="checkbox" formControlName="flagEnvoiReclamant" class="form-check-input" id="flagEnvoiReclamant" />
+                <label class="form-check-label" for="flagEnvoiReclamant">تم الرد على الشاكي؟</label>
+              </div>
+            </div>
+            <!-- تاريخ إرسال الرد للشاكي -->
+            <div class="col-md-6">
+              <label class="form-label">تاريخ إرسال الرد للشاكي (من - إلى)</label>
+              <div class="input-group">
+                <input type="date" formControlName="dateEnvoiReclamantStart" class="form-control" />
+                <input type="date" formControlName="dateEnvoiReclamantEnd" class="form-control" />
+              </div>
+            </div>
+            <!-- طريقة إرسال الرد للشاكي -->
+            <div class="col-md-4">
+              <label class="form-label">طريقة إرسال الرد للشاكي</label>
+              <select formControlName="voieEnvoiReclamant" class="form-select">
+                <option value="">-- اختر --</option>
+                <option *ngFor="let voie of voieReponses" [value]="voie.id">{{ voie.nomLangue2 }}</option>
+              </select>
+            </div>
+            <!-- مرجع إرسال الرد للشاكي -->
+            <div class="col-md-4">
+              <label class="form-label">مرجع إرسال الرد للشاكي</label>
+              <input type="text" formControlName="referenceEnvoiReclamant" class="form-control" />
+            </div>
+            <!-- المستخدم (الإدخال) -->
+            <div class="col-md-4">
+              <label class="form-label">المستخدم (الإدخال)</label>
+              <select formControlName="userSaisie" class="form-select">
+                <option value="">-- اختر --</option>
+                <option *ngFor="let user of userLogins" [value]="user.id">{{ user.login }}</option>
+              </select>
+            </div>
+            <!-- المستخدم (إرسال للسلطة) -->
+            <div class="col-md-4">
+              <label class="form-label">المستخدم (إرسال للسلطة)</label>
+              <select formControlName="userEnvoiAutorite" class="form-select">
+                <option value="">-- اختر --</option>
+                <option *ngFor="let user of userLogins" [value]="user.id">{{ user.login }}</option>
+              </select>
+            </div>
+            <!-- المستخدم (عودة من السلطة) -->
+            <div class="col-md-4">
+              <label class="form-label">المستخدم (عودة من السلطة)</label>
+              <select formControlName="userRetourAutorite" class="form-select">
+                <option value="">-- اختر --</option>
+                <option *ngFor="let user of userLogins" [value]="user.id">{{ user.login }}</option>
+              </select>
+            </div>
+            <!-- نوع الطلب -->
+            <div class="col-md-4">
+              <label class="form-label">نوع الطلب</label>
+              <select formControlName="typeRequete" class="form-select">
+                <option value="">-- اختر --</option>
+                <option *ngFor="let type of typeRequetes" [value]="type.id">{{ type.nomLangue2 }}</option>
+              </select>
+            </div>
+            <!-- المُرسَل إليه -->
+            <div class="col-md-4">
+              <label class="form-label">المُرسَل إليه</label>
+              <input type="text" formControlName="destinataire" class="form-control" />
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-12 text-end">
+              <button type="submit" class="btn btn-success">بحث</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- جدول النتائج -->
+    <div class="card mt-4">
+      <div class="card-header bg-secondary text-white">
+        <h4 class="mb-0">قائمة الشكايات</h4>
+      </div>
+      <div class="card-body table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead class="table-dark">
+            <tr>
+              <th>تاريخ الإيداع</th>
+              <th>رقم التسجيل</th>
+              <th>المعرف</th>
+              <th>الاسم الكامل</th>
+              <th>مصدر الشكاية</th>
+              <th>نوع الشكاية</th>
+              <th>موضوع الشكاية</th>
+              <th>نوع الطلب</th>
+              <th>المُرسَل إليه</th>
+              <th>الإرسال إلى السلطة</th>
+              <th>الرد من الهيئة</th>
+              <th>إرسال إلى صاحب الشكاية</th>          
+              <th>إجراءات</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let rec of reclamations">
+              <td>{{ rec.dateDepot | date:'dd/MM/yyyy' }}</td>
+              <td>{{ formatNumInscription(rec.numInscription) }}</td>
+              <td>{{ rec.identifiant }}</td>
+              <td>{{ rec.nomComplet }}</td>
+              <td>{{ rec.sourceReclamation?.nomLangue2 }}</td>
+              <td>{{ rec.typeReclamation?.nomLangue2 }}</td>
+              <td>{{ rec.objetReclamation }}</td>
+              <td>{{ rec.typeRequete?.nomLangue2 }}</td>
+              <td>{{ rec.destinataire }}</td>
+              <td>{{ rec.flagEnvoiAutorite == 1 ? 'نعم' : 'لا' }}</td>
+              <td>{{ rec.flagRetourAutorite == 1 ? 'نعم' : 'لا' }}</td>
+              <td>{{ rec.flagEnvoiReclamant == 1 ? 'نعم' : 'لا' }}</td>          
+              <td>
+                <button class="btn btn-info btn-sm" (click)="consultReclamation(rec)">عرض</button>
+                <button class="btn btn-warning btn-sm" (click)="editReclamation(rec)">تعديل</button>
+                <button class="btn btn-danger btn-sm" (click)="deleteReclamation(rec.id)">حذف</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between align-items-center mt-3">
+          <div>
+            <label for="pageSize">عدد العناصر لكل صفحة:
+            </label>
+            <select id="pageSize" [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+              <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+            </select>
+          </div>
+          <div>
+            <button class="btn btn-primary" (click)="previousPage()" [disabled]="currentPage === 0">سابق</button>
+            <span>Page {{ currentPage + 1 }} sur {{ totalPages }}</span>
+            <button class="btn btn-primary" (click)="nextPage()" [disabled]="currentPage >= totalPages - 1">التالي</button>
+          </div>
+          <div>
+            <button class="btn btn-success" (click)="exportExcel()">تصدير إلى إكسل            </button>
+          </div>
+        </div>
+        
+
+
+      </div>
+    </div>
+  </div>
+    
+  <!-- نافذة منبثقة (مودال) للعرض/التعديل -->
+<!-- Modal de modification / consultation -->
+<!-- Modal de modification / consultation -->
+<div class="modal fade show" tabindex="-1" style="display: block;" *ngIf="selectedReclamation" dir="rtl">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">{{ isConsultation ? 'عرض الشكاية' : 'تعديل الشكاية' }}</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="selectedReclamation">
+          <!-- Première ligne : ID, date dépôt, date inscription -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">المعرف</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.id" name="id" disabled />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">تاريخ الإيداع</label>
+              <input type="date" class="form-control" [(ngModel)]="selectedReclamation.dateDepot" name="dateDepot" [disabled]="isConsultation" />
+            </div>
+          </div>
+
+          <!-- Deuxième ligne : numéro inscription, type identifiant, identifiant -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">رقم التسجيل</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.numInscription" name="numInscription" disabled />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">نوع المعرف</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.typeIdentifiant" name="typeIdentifiant" [disabled]="isConsultation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">المعرف</label>
+              <!-- Appel de formatIdentifiant() lors du blur pour nettoyer la valeur -->
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.identifiant" name="identifiant" (blur)="formatIdentifiant()" [disabled]="isConsultation" />
+            </div>
+          </div>
+
+          <!-- Troisième ligne : nom complet, commune (liste), adresse -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">الاسم الكامل</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.nomComplet" name="nomComplet" [disabled]="isConsultation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">النفوذ الترابي</label>
+              <!-- Liste déroulante pour commune -->
+              <select class="form-select" [(ngModel)]="selectedReclamation.commune" name="commune" [disabled]="isConsultation">
+                <option value="">-- اختر --</option>
+                <option *ngFor="let com of communes" [value]="com">{{ com }}</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">العنوان</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.adresse" name="adresse" [disabled]="isConsultation" />
+            </div>
+          </div>
+
+          <!-- Quatrième ligne : téléphone, type réclamation (liste), objet réclamation -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">الهاتف</label>
+              <!-- Utilisation de la regex depuis le composant via telephoneRegex.source -->
+              <input type="tel" class="form-control"
+                     [(ngModel)]="selectedReclamation.telephone"
+                     name="telephone"
+                     [attr.pattern]="telephoneRegex.source"
+                     placeholder="10 أرقام"
+                     (blur)="validateTelephone()"
+                     [disabled]="isConsultation" />
+              <div *ngIf="selectedReclamation.telephone && !telephoneRegex.test(selectedReclamation.telephone)" class="text-danger">
+                تنسيق الهاتف غير صحيح!
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">نوع الشكاية</label>
+              <!-- Liste déroulante pour typeReclamation -->
+              <select class="form-select" [(ngModel)]="selectedReclamation.typeReclamation" name="typeReclamation" [disabled]="isConsultation">
+                <option [ngValue]="">-- اختر --</option>
+                <option *ngFor="let type of typeReclamations" [ngValue]="type">{{ type.nomLangue2 }}</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">موضوع الشكاية</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.objetReclamation" name="objetReclamation" [disabled]="isConsultation" />
+            </div>
+          </div>
+
+          <!-- Cinquième ligne : pièce jointe, année, flag envoi autorité -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">مرفق الشكاية</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.pieceJointeReclamation" name="pieceJointeReclamation" [disabled]="isConsultation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">السنة</label>
+              <input type="number" class="form-control" [(ngModel)]="selectedReclamation.annee" name="annee" [disabled]="isConsultation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">تم الإرسال إلى السلطة</label>
+              <input type="checkbox" class="form-check-input" [(ngModel)]="selectedReclamation.flagEnvoiAutorite" name="flagEnvoiAutorite" [disabled]="isConsultation" />
+            </div>
+          </div>
+
+          <!-- Sixième ligne : date envoi autorité, voie envoi autorité (liste), référence envoi autorité -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">تاريخ إرسال إلى السلطة</label>
+              <input type="date" class="form-control" [(ngModel)]="selectedReclamation.dateEnvoiAutorite" name="dateEnvoiAutorite" [disabled]="isConsultation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">طريقة إرسال إلى السلطة</label>
+              <select class="form-select" [(ngModel)]="selectedReclamation.voieEnvoiAutorite" name="voieEnvoiAutorite" [disabled]="isConsultation">
+                <option [ngValue]="">-- اختر --</option>
+                <option *ngFor="let voie of voieReponses" [ngValue]="voie">{{ voie.nomLangue2 }}</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">مرجع إرسال إلى السلطة</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.referenceEnvoiAutorite" name="referenceEnvoiAutorite" [disabled]="isConsultation" />
+            </div>
+          </div>
+
+          <!-- Septième ligne : flag retour autorité, date retour autorité, voie retour autorité (liste) -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">عودة من السلطة</label>
+              <input type="checkbox" class="form-check-input" [(ngModel)]="selectedReclamation.flagRetourAutorite" name="flagRetourAutorite" [disabled]="isConsultation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">تاريخ عودة من السلطة</label>
+              <input type="date" class="form-control" [(ngModel)]="selectedReclamation.dateRetourAutorite" name="dateRetourAutorite" [disabled]="isConsultation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">طريقة عودة من السلطة</label>
+              <select class="form-select" [(ngModel)]="selectedReclamation.voieRetourAutorite" name="voieRetourAutorite" [disabled]="isConsultation">
+                <option [ngValue]="">-- اختر --</option>
+                <option *ngFor="let voie of voieReponses" [ngValue]="voie">{{ voie.nomLangue2 }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Huitième ligne : référence retour autorité, flag envoi réclamant, date envoi réclamant -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">مرجع عودة من السلطة</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.referenceRetourAutorite" name="referenceRetourAutorite" [disabled]="isConsultation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">تم الرد على الشاكي</label>
+              <input type="checkbox" class="form-check-input" [(ngModel)]="selectedReclamation.flagEnvoiReclamant" name="flagEnvoiReclamant" [disabled]="isConsultation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">تاريخ إرسال الرد للشاكي</label>
+              <input type="date" class="form-control" [(ngModel)]="selectedReclamation.dateEnvoiReclamant" name="dateEnvoiReclamant" [disabled]="isConsultation" />
+            </div>
+          </div>
+
+          <!-- Neuvième ligne : voie envoi réclamant (liste), référence envoi réclamant, instructions gouverneur -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">طريقة إرسال الرد للشاكي</label>
+              <select class="form-select" [(ngModel)]="selectedReclamation.voieEnvoiReclamant" name="voieEnvoiReclamant" [disabled]="isConsultation">
+                <option [ngValue]="">-- اختر --</option>
+                <option *ngFor="let voie of voieReponses" [ngValue]="voie">{{ voie.nomLangue2 }}</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">مرجع إرسال الرد للشاكي</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.referenceEnvoiReclamant" name="referenceEnvoiReclamant" [disabled]="isConsultation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">تعليمات المحافظ</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.instructionsGouverneur" name="instructionsGouverneur" [disabled]="isConsultation" />
+            </div>
+          </div>
+
+          <!-- Dixième ligne : pièce jointe envoi autorité, pièce jointe retour réclamant, id_user_saisie -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">مرفق إرسال السلطة</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.pieceJointeEnvoiAutorite" name="pieceJointeEnvoiAutorite" [disabled]="isConsultation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">مرفق عودة الشكاية</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.pieceJointeRetourReclamant" name="pieceJointeRetourReclamant" [disabled]="isConsultation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">معرف المستخدم (الإدخال)</label>
+              <input type="text" class="form-control" [value]="selectedReclamation.userSaisie?.login" name="id_user_saisie" disabled />
+            </div>
+          </div>
+
+          <!-- Onzième ligne : id_user_envoi_autorite, id_user_retour_autorite, type requête (liste) -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">معرف المستخدم (إرسال للسلطة)</label>
+              <input type="text" class="form-control" [value]="selectedReclamation.userEnvoiAutorite?.login" name="id_user_envoi_autorite" disabled />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">معرف المستخدم (عودة من السلطة)</label>
+              <input type="text" class="form-control" [value]="selectedReclamation.userRetourAutorite?.login" name="id_user_retour_autorite" disabled />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">نوع الطلب</label>
+              <select class="form-select" [(ngModel)]="selectedReclamation.typeRequete" name="typeRequete" [disabled]="isConsultation">
+                <option [ngValue]="">-- اختر --</option>
+                <option *ngFor="let type of typeRequetes" [ngValue]="type">{{ type.nomLangue2 }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Douzième ligne : id_user_envoi_reclamant, observation1, observation2 -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">معرف المستخدم (إرسال الشكاية)</label>
+              <input type="text" class="form-control" [value]="selectedReclamation.userEnvoiReclamant?.login" name="id_user_envoi_reclamant" disabled />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">ملاحظة 1</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.observation1" name="observation1" [disabled]="isConsultation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">ملاحظة 2</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.observation2" name="observation2" [disabled]="isConsultation" />
+            </div>
+          </div>
+
+          <!-- Treizième ligne : observation3, id_type_destinataire, reference_bo -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">ملاحظة 3</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.observation3" name="observation3" [disabled]="isConsultation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">معرف نوع المستقبل</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.id_type_destinataire" name="id_type_destinataire" [disabled]="isConsultation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">مرجع BO</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.reference_bo" name="reference_bo" [disabled]="isConsultation" />
+            </div>
+          </div>
+
+          <!-- Quatorzième ligne : pièce jointe, destinataire -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">مرفق</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.piece_jointe" name="piece_jointe" [disabled]="isConsultation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">المُرسَل إليه</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedReclamation.destinataire" name="destinataire" [disabled]="isConsultation" />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="!isConsultation" class="btn btn-success" (click)="saveReclamation()">حفظ</button>
+        <button class="btn btn-secondary" (click)="closeModal()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+</div>

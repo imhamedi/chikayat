@@ -1,0 +1,80 @@
+<div class="container">
+    <h2>إدارة أنواع المستلمين</h2>
+    
+    <!-- Formulaire de recherche -->
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <input type="text" [(ngModel)]="searchKeyword" placeholder="بحث" class="form-control">
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-primary" (click)="search()">بحث</button>
+      </div>
+      <div class="col-md-6 text-end">
+        <button class="btn btn-success" (click)="openCreateModal()">إضافة</button>
+      </div>
+    </div>
+    
+    <!-- Tableau des sources -->
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>الاسم </th>
+            <th>الإجراءات</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let source of sources">
+            <td>{{ source.nomLangue2 }}</td>
+            <td>
+              <button class="btn btn-warning btn-sm" (click)="openEditModal(source)">تعديل</button>
+              <button class="btn btn-danger btn-sm" (click)="delete(source.id)">حذف</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- Modale de création -->
+  <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createModalLabel">إضافة أنواع المستلمين</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="create()">
+            <div class="mb-3">
+              <label for="nomLangue2" class="form-label">الاسم  :</label>
+              <input type="text" id="nomLangue2" [(ngModel)]="newSource.nomLangue2" name="nomLangue2" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">حفظ</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modale d'édition -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">تعديل مصدر الشكاية</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="update()">
+            <div class="mb-3">
+              <label for="editNomLangue2" class="form-label">الاسم  :</label>
+              <input type="text" id="editNomLangue2" [(ngModel)]="selectedSource.nomLangue2" name="nomLangue2" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

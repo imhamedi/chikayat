@@ -1,0 +1,144 @@
+<div class="container">
+    <h2>إدارة الأقاليم/المناطق</h2>
+  
+    <!-- Formulaire de recherche multi-champs -->
+    <div class="row mb-3">
+      <div class="col-md-2">
+        <input type="text" [(ngModel)]="searchCriteria.codeVille" name="codeVille" placeholder="رمز المدينة" class="form-control">
+      </div>
+      <div class="col-md-2">
+        <input type="text" [(ngModel)]="searchCriteria.nomVilleLangue2" name="nomVilleLangue2" placeholder="اسم المدينة" class="form-control">
+      </div>
+      <div class="col-md-2">
+        <input type="text" [(ngModel)]="searchCriteria.codeCommune" name="codeCommune" placeholder="رمز النفوذ الترابي" class="form-control">
+      </div>
+      <div class="col-md-2">
+        <input type="text" [(ngModel)]="searchCriteria.nomCommuneLangue2" name="nomCommuneLangue2" placeholder="اسم النفوذ الترابي" class="form-control">
+      </div>
+      <div class="col-md-2">
+        <input type="text" [(ngModel)]="searchCriteria.codeArrondissement" name="codeArrondissement" placeholder="رمز الدائرة" class="form-control">
+      </div>
+      <div class="col-md-2">
+        <input type="text" [(ngModel)]="searchCriteria.nomArrondissementLangue2" name="nomArrondissementLangue2" placeholder="اسم الدائرة" class="form-control">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-12 text-end">
+        <button class="btn btn-primary" (click)="search()">بحث</button>
+      </div>
+    </div>
+  
+    <!-- Tableau des territoires -->
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>رمز المدينة</th>
+            <th>اسم المدينة (nom_ville_langue_2)</th>
+            <th>رمز النفوذ الترابي</th>
+            <th>اسم النفوذ الترابي (nom_commune_langue_2)</th>
+            <th>رمز الدائرة</th>
+            <th>اسم الدائرة (nom_arrondissement_langue_2)</th>
+            <th>الإجراءات</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let territoire of territoires">
+            <td>{{ territoire.codeVille }}</td>
+            <td>{{ territoire.nomVilleLangue2 }}</td>
+            <td>{{ territoire.codeCommune }}</td>
+            <td>{{ territoire.nomCommuneLangue2 }}</td>
+            <td>{{ territoire.codeArrondissement }}</td>
+            <td>{{ territoire.nomArrondissementLangue2 }}</td>
+            <td>
+              <button class="btn btn-warning btn-sm" (click)="openEditModal(territoire)">تعديل</button>
+              <button class="btn btn-danger btn-sm" (click)="delete(territoire.id)">حذف</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- Modale de création -->
+  <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createModalLabel">إضافة منطقة</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="create()">
+            <div class="mb-3">
+              <label for="codeVille" class="form-label">رمز المدينة :</label>
+              <input type="text" id="codeVille" [(ngModel)]="newTerritoire.codeVille" name="codeVille" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="nomVilleLangue2" class="form-label">اسم المدينة (nom_ville_langue_2) :</label>
+              <input type="text" id="nomVilleLangue2" [(ngModel)]="newTerritoire.nomVilleLangue2" name="nomVilleLangue2" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="codeCommune" class="form-label">رمز النفوذ الترابي :</label>
+              <input type="text" id="codeCommune" [(ngModel)]="newTerritoire.codeCommune" name="codeCommune" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="nomCommuneLangue2" class="form-label">اسم النفوذ الترابي (nom_commune_langue_2) :</label>
+              <input type="text" id="nomCommuneLangue2" [(ngModel)]="newTerritoire.nomCommuneLangue2" name="nomCommuneLangue2" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="codeArrondissement" class="form-label">رمز الدائرة :</label>
+              <input type="text" id="codeArrondissement" [(ngModel)]="newTerritoire.codeArrondissement" name="codeArrondissement" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="nomArrondissementLangue2" class="form-label">اسم الدائرة (nom_arrondissement_langue_2) :</label>
+              <input type="text" id="nomArrondissementLangue2" [(ngModel)]="newTerritoire.nomArrondissementLangue2" name="nomArrondissementLangue2" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">حفظ</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modale d'édition -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">تعديل المنطقة</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="update()">
+            <div class="mb-3">
+              <label for="editCodeVille" class="form-label">رمز المدينة :</label>
+              <input type="text" id="editCodeVille" [(ngModel)]="selectedTerritoire.codeVille" name="codeVille" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="editNomVilleLangue2" class="form-label">اسم المدينة (nom_ville_langue_2) :</label>
+              <input type="text" id="editNomVilleLangue2" [(ngModel)]="selectedTerritoire.nomVilleLangue2" name="nomVilleLangue2" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="editCodeCommune" class="form-label">رمز النفوذ الترابي :</label>
+              <input type="text" id="editCodeCommune" [(ngModel)]="selectedTerritoire.codeCommune" name="codeCommune" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="editNomCommuneLangue2" class="form-label">اسم النفوذ الترابي (nom_commune_langue_2) :</label>
+              <input type="text" id="editNomCommuneLangue2" [(ngModel)]="selectedTerritoire.nomCommuneLangue2" name="nomCommuneLangue2" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="editCodeArrondissement" class="form-label">رمز الدائرة :</label>
+              <input type="text" id="editCodeArrondissement" [(ngModel)]="selectedTerritoire.codeArrondissement" name="codeArrondissement" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="editNomArrondissementLangue2" class="form-label">اسم الدائرة (nom_arrondissement_langue_2) :</label>
+              <input type="text" id="editNomArrondissementLangue2" [(ngModel)]="selectedTerritoire.nomArrondissementLangue2" name="nomArrondissementLangue2" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

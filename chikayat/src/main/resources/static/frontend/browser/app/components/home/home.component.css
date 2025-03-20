@@ -1,0 +1,195 @@
+.home-container {
+    display: flex; /* 🟢 Active Flexbox pour un alignement horizontal */
+    flex-direction: row; /* 🟢 Assure un alignement sur une ligne */
+    align-items: center; /* 🟢 Centre verticalement les éléments */
+    justify-content: center; /* 🟢 Centre horizontalement */
+    height: 100vh; /* 🟢 Prend toute la hauteur de la fenêtre */
+    /* background: url('/assets/Home.jpg') no-repeat center center; */
+    background:white;
+    background-size: cover;
+    padding: 20px;
+    text-align: center;
+    padding-right: 250px;
+  }
+  
+  .home-image {
+    width: 250px;  /* 📌 Taille uniforme des images */
+    height: 250px; 
+    object-fit: contain; /* 📌 Empêche la distorsion de l’image */
+    margin: 0 30px; /* 📌 Espace entre les images et le texte */
+  }
+  
+  .home-text {
+    text-align: center;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 2rem;
+    white-space: nowrap; /* 📌 Empêche la mise à la ligne automatique */
+  }
+  .profile-icon {
+    direction: ltr;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .profile-icon::after {
+    margin-left: 0.5rem; /* espace à droite de l'image */
+    margin-right: 0;
+  }
+  /* Contexte RTL et affichage en ligne pour chaque info */
+.stats-container {
+  direction: rtl;
+  text-align: right;
+  margin: 20px;
+}
+
+.stat {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  display: block; /* Chaque info occupe toute la largeur */
+}
+
+.filter-duration {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Style général du modal en RTL */
+.modal-content {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Pour espacer les lignes du formulaire */
+.row.mb-3 {
+  margin-bottom: 1rem;
+}
+
+/* Pour chaque ligne du formulaire */
+.form-label {
+  font-weight: bold;
+}
+.stat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+/* Le conteneur pour le libellé et le filtre */
+.label-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espace entre le titre et le bloc filter-duration */
+}
+
+.filter-duration {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+/* En-tête */
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f5f5f5;
+  direction: rtl;
+}
+
+.home-header .timer {
+  font-size: 1rem;
+  color: #333;
+  /* Alignement à gauche par défaut en flex (si direction RTL, la première div est à droite, 
+     pensez à inverser l'ordre si besoin) */
+}
+
+.home-header .header-title {
+  font-family: 'Amiri', 'Scheherazade', serif;
+  font-size: 2rem;
+  color: #004085;
+  text-align: center;
+  flex-grow: 1;
+}
+
+
+/* Section des statistiques */
+.stats-container {
+  direction: rtl;
+  text-align: right;
+  margin: 20px;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.label-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-duration {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Style général du modal en RTL */
+.modal-content {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Pour espacer les lignes du formulaire */
+.row.mb-3 {
+  margin-bottom: 1rem;
+}
+
+/* Pour chaque ligne du formulaire */
+.form-label {
+  font-weight: bold;
+}
+.card {
+  direction: rtl;
+  text-align: right;
+}
+
+.table thead th {
+  text-align: center;
+}
+
+/* Styles pour la section des camemberts */
+.charts-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.chart {
+  width: 300px;
+  height: 300px;
+  margin: 20px;
+}
+
+canvas {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+}

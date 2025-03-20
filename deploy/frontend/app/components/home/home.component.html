@@ -1,0 +1,100 @@
+<!-- En-tête avec timer et titre -->
+<header class="home-header">
+  <div class="timer">{{ currentTime }}</div>
+  <div class="header-title">إحصائيات الشكايات</div>
+</header>
+
+<!-- Section des statistiques en arabe -->
+<div class="stats-container">
+  <div class="stat" (click)="openReclamationsList('total')">
+    <h3>إجمالي الشكايات</h3>
+    <p>{{ stats.total }}</p>
+  </div>
+  <div class="stat" (click)="openReclamationsList('enCours')">
+    <h3>شكايات في انتظار الإرسال إلى السلطات  </h3>
+    <p>{{ stats.enCours }}</p>
+  </div>
+  <div class="stat" (click)="openReclamationsList('envoyeesAutorite')">
+    <h3>مراسلات في انتظار رد السلطات</h3>
+    <p>{{ stats.envoyeesAutorite }}</p>
+  </div>
+  <div class="stat" (click)="openReclamationsList('reponduAutorite')">
+
+    <h3>شكايات في انتظار الإرسال إلى صاحب الشكاية</h3>
+    <p>{{ stats.reponduAutorite }}</p>
+  </div>
+  <div class="stat" (click)="openReclamationsList('cloturees')">
+    <h3>مغلقة</h3>
+    <p>{{ stats.cloturees }}</p>
+  </div>
+
+</div>
+
+<!-- Section des camemberts pour les statistiques par période -->
+<div class="charts-container">
+  <div class="chart">
+    <h3>إحصائيات آخر 7 أيام</h3>
+    <canvas id="chart7days" width="300" height="300"></canvas>
+  </div>
+  <div class="chart">
+    <h3>إحصائيات آخر 30 يوم</h3>
+    <canvas id="chart30days"></canvas>
+  </div>
+  <div class="chart">
+    <h3>إحصائيات السنة الجارية </h3>
+    <canvas id="chartYear"></canvas>
+  </div>
+</div>
+
+
+
+<!-- Modal affichant la liste des réclamations (sous forme de tableau) -->
+<div class="modal fade" id="reclamationsListModal" tabindex="-1" aria-labelledby="reclamationsListModalLabel" aria-hidden="true" dir="rtl">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="card-header bg-secondary text-white">
+        <h4 class="mb-0">قائمة الشكايات</h4>
+      </div>
+      <div class="card-body table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead class="table-dark">
+            <tr>
+              <th>ID</th>
+              <th>تاريخ الإيداع</th>
+              <th>تاريخ التسجيل</th>
+              <th>رقم التسجيل</th>
+              <th>المعرف</th>
+              <th>الاسم الكامل</th>
+              <th>مصدر الشكاية</th>
+              <th>نوع الشكاية</th>
+              <th>موضوع الشكاية</th>
+              <th>تعليمات المحافظ</th>
+              <th>نوع الطلب</th>
+              <th>المُرسَل إليه</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let rec of reclamations">
+              <td>{{ rec.id }}</td>
+              <td>{{ rec.dateDepot | date:'short' }}</td>
+              <td>{{ rec.dateInscription | date:'short' }}</td>
+              <td>{{ rec.numInscription }}</td>
+              <td>{{ rec.identifiant }}</td>
+              <td>{{ rec.nomComplet }}</td>
+              <td>{{ rec.sourceReclamation?.nomLangue2 }}</td>
+              <td>{{ rec.typeReclamation?.nomLangue2 }}</td>
+              <td>{{ rec.objetReclamation }}</td>
+              <td>{{ rec.instructionsGouverneur }}</td>
+              <td>{{ rec.typeRequete?.nomLangue2 }}</td>
+              <td>{{ rec.destinataire }}</td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeListModal()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,133 @@
+.container {
+    margin-top: 20px;
+  }
+  
+  .modal-header {
+    background-color: #007bff;
+    color: white;
+  }
+  /* Ajuster le conteneur du groupe de formulaire */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+/* Style du label pour harmoniser la présentation */
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+/* Adapter le style de ng-select */
+.ng-select {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  position: relative; /* Ajouté pour contexte de positionnement */
+}
+
+/* Style du panneau déroulant */
+.ng-dropdown-panel {
+  font-size: 0.9rem;
+  z-index: 1000 !important; /* Force le menu à s'afficher au premier plan */
+  position: absolute !important; /* Positionnement absolu */
+  width: 100%; /* Largeur égale au parent */
+  background: white; /* Fond opaque */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Ombre pour meilleure visibilité */
+}
+
+/* Style des éléments de la liste */
+.ng-option {
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+  direction: rtl; /* Alignement du texte à droite */
+}
+
+/* Style au survol */
+.ng-option:hover {
+  background-color: #f5f5f5;
+}
+
+/* Style de l'élément sélectionné */
+.ng-option.marked {
+  background-color: #e0f0ff;
+}
+
+/* Conteneur d'entrée */
+.ng-input {
+  text-align: right;
+}
+
+/* Placeholder */
+.ng-placeholder {
+  color: #999;
+  text-align: right;
+}
+
+/* Forcer l'arrière-plan opaque */
+.ng-dropdown-panel {
+  background: #ffffff !important; /* Blanc solide */
+  border: 1px solid #ccc !important;
+  z-index: 9999 !important;
+}
+
+/* Options de la liste */
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background: #ffffff !important; 
+  color: #333 !important;
+  padding: 8px 12px;
+  direction: rtl;
+}
+
+/* Style au survol */
+.ng-dropdown-panel .ng-option:hover {
+  background: #f5f5f5 !important;
+}
+
+/* Conteneur principal */
+.ng-select-container {
+  background: #fff !important;
+  border: 1px solid #ced4da !important;
+}
+/* Solution radicale avec ::ng-deep (Angular) */
+::ng-deep .ng-dropdown-panel {
+  opacity: 1 !important;
+  background: white !important;
+}
+
+::ng-deep .ng-option {
+  background: white !important;
+  opacity: 1 !important;
+}
+/* Élargir le conteneur principal */
+::ng-deep .ng-dropdown-panel {
+  min-width: 100% !important;       /* Largeur minimale égale au parent */
+  width: auto !important;           /* Largeur automatique selon contenu */
+  max-width: none !important;       /* Désactive toute limite de largeur */
+}
+
+/* Élargir les éléments de la liste */
+::ng-deep .ng-option {
+  white-space: nowrap !important;   /* Empêche le retour à ligne */
+  min-width: 100% !important;       /* Occupe toute la largeur disponible */
+  padding: 8px 12px !important;
+}
+
+/* Style spécifique du label */
+::ng-deep .ng-option-label {
+  display: block !important;
+  width: 100% !important;
+  text-overflow: ellipsis;          /* Ajoute "..." si texte trop long */
+  overflow: hidden;                 /* Cache le débordement */
+}
+::ng-deep .ng-option {
+  direction: rtl;
+  text-align: right;
+  padding-right: 20px !important;
+}
+::ng-deep .ng-option {
+  white-space: normal !important;
+  min-width: 250px !important;
+  line-height: 1.4;
+}

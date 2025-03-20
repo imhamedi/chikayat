@@ -1,0 +1,83 @@
+<div class="profile-container">
+  <h2>الملف الشخصي</h2>
+  
+    <!-- Image de profil -->
+    <div class="profile-picture-container">
+      <img [src]="profilePicture" alt="Photo de profil" class="profile-picture" />
+      <input type="file" (change)="uploadPicture($event)" id="fileInput" hidden />
+      <button class="btn btn-secondary" (click)="triggerFileInput()">📸 تغيير الصورة</button>
+    </div>
+  
+    <!-- Formulaire du profil -->
+    <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+      <div class="form-group">
+        <label for="nom">الاسم</label>
+        <input type="text" id="nom" formControlName="nom" class="form-control" />
+      </div>
+  
+      <div class="form-group">
+        <label for="login">اسم المستخدم</label>
+        <input type="text" id="login" formControlName="login" class="form-control"  [attr.disabled]="true" />
+      </div>
+  
+      <div class="form-group">
+        <label for="email">البريد الإلكتروني</label>
+        <input type="email" id="email" formControlName="email" class="form-control" />
+      </div>
+  
+      <div class="form-group">
+        <label for="niveau">الوظيفة</label>
+        <select id="niveau" formControlName="niveau" class="form-control">
+          <option *ngFor="let niveau of niveaux" [value]="niveau.description">{{ niveau.description }}</option>
+        </select>
+      </div>
+        
+      <div class="form-group">
+        <label for="role">الدور</label>
+        <input type="text" id="role" formControlName="role" class="form-control"  [attr.disabled]="true" />
+      </div>
+  
+      <!-- Boutons -->
+      <div class="btn-group">
+        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#passwordModal">🔒 تغيير كلمة المرور</button>
+        <button type="submit" class="btn btn-success">💾 حفظ</button>
+      </div>
+    </form>
+
+<!-- Modale Bootstrap -->
+<div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="passwordModalLabel">تغيير كلمة المرور</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        <input type="password" [(ngModel)]="oldPassword" class="form-control mb-2" placeholder="Ancien mot de passe">
+        <input type="password" [(ngModel)]="newPassword" class="form-control mb-2" placeholder="Nouveau mot de passe">
+        <input type="password" [(ngModel)]="confirmPassword" class="form-control mb-2" placeholder="Confirmer le mot de passe">
+        <button type="button" class="btn btn-info mt-2 btn-pwd-rgl" (click)="showPasswordRules()" id="btn-pwd-rgl">📜 قواعد كلمة المرور
+        </button>
+  <!-- ✅ Ajout d'un message d'erreur/succès spécifique à la modale -->
+  <div *ngIf="modalMessage" class="alert mt-2" [ngClass]="modalMessageType">
+    {{ modalMessage }}
+  </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+        <button class="btn btn-success" (click)="changePassword()">تأكيد</button>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+
+
+<!-- Message de confirmation -->
+<div *ngIf="message" class="alert alert-success mt-3">
+      {{ message }}
+    </div>
+    
+  

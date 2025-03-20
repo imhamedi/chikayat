@@ -1,0 +1,125 @@
+<nav class="sidebar">
+  <ul>
+    <!-- 🏠 الصفحة الرئيسية -->
+    <li>
+      <a routerLink="/home" class="nav-link px-0 align-middle">
+        <i class="bi bi-house-door"></i> 
+        <span class="me-1 d-none d-sm-inline">🏠 الصفحة الرئيسية </span>
+      </a>
+    </li>
+    <hr />
+
+    <!-- ⚙️ الإدارة -->
+    <li>
+      <a (click)="toggleMenu('adminMenu')" class="nav-link px-0 align-middle">
+        <i class="bi bi-gear"></i> 
+        <span class="me-1 d-none d-sm-inline">⚙️ الإدارة</span>
+      </a>
+      <ul [class.show]="activeMenu === 'adminMenu'" class="collapse nav flex-column me-1">
+        <li>
+          <hr />
+          <a routerLink="/admin/users" class="nav-link px-0">إدارة المستخدمين</a>
+        </li>
+        <hr />
+        <li>
+          <a (click)="toggleSubMenu('sousadminMenu')" class="nav-link px-0 align-middle">
+            <i class="bi bi-pencil"></i> <span class="me-1 d-none d-sm-inline">الإعدادات</span>
+          </a>
+          <!-- Sous-menu avec classe personnalisée pour le style RTL et retrait supplémentaire -->
+          <ul [class.show]="activeSubMenu === 'sousadminMenu'" class="collapse nav flex-column me-3 sub-menu">
+            <li>
+              <hr />
+              <a routerLink="ajouter-niveau" class="nav-link px-0">مستويات</a>
+            </li>
+            <hr />
+            <li>
+              <a routerLink="/admin/settings/source-reclamation" class="nav-link px-0">مصادر الشكايات</a>
+            </li>
+            <hr />
+            <li>
+              <a routerLink="/admin/settings/type-destinataire" class="nav-link px-0">أنواع المستلمين</a>
+            </li>
+            <hr />
+            <li>
+              <a routerLink="/admin/settings/type-reclamation" class="nav-link px-0">أنواع الشكايات</a>
+            </li>
+            <hr />
+            <li>
+              <a routerLink="/admin/settings/type-requete" class="nav-link px-0">أنواع الطلبات</a>
+            </li>
+            <hr />			
+            <li>
+              <a routerLink="/admin/settings/voie-reponse" class="nav-link px-0">طرق الرد</a>
+            </li>
+            <hr />	
+            <li>
+              <a routerLink="/admin/settings/territoires" class="nav-link px-0">الأقاليم/المناطق</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <hr />
+
+    <!-- 📄 الشكايات -->
+    <li>
+      <a (click)="toggleMenu('reclamationMenu')" class="nav-link px-0 align-middle">
+        <i class="bi bi-folder"></i> 
+        <span class="me-1 d-none d-sm-inline">📄 الشكايات</span>
+      </a>
+      <ul [class.show]="activeMenu === 'reclamationMenu'" class="collapse nav flex-column me-1">
+        
+        <li>
+          <hr />
+          <a routerLink="reclamation-management" class="nav-link px-0">استعراض الشكايات</a>
+        </li>
+        <hr />
+        <!-- معالجة الشكايات مع القوائم الفرعية -->
+        <li>
+          <a (click)="toggleSubMenu('traitementMenu')" class="nav-link px-0 align-middle">
+            <i class="bi bi-pencil"></i> <span class="me-1 d-none d-sm-inline">معالجة الشكايات</span>
+          </a>
+          <!-- Sous-menu avec classe personnalisée pour le style RTL et retrait supplémentaire -->
+          <ul [class.show]="activeSubMenu === 'traitementMenu'" class="collapse nav flex-column me-3 sub-menu">
+            <li>
+              <hr />
+              <a routerLink="/ajouter-reclamation" class="nav-link px-0">✍️ إدخال الشكاية</a>
+            </li>
+            <hr />
+            <li>
+              <a routerLink="/reclamations/envoi-autorite" class="nav-link px-0">📨 إرسال الجهة المختصة</a>
+            </li>
+            <hr />
+            <li>
+              <a routerLink="/reclamations/retour-autorite" class="nav-link px-0">🔄 عودة الجهة المختصة</a>
+            </li>
+            <hr />
+            <li>
+              <a routerLink="/reclamations/envoi-reclamant" class="nav-link px-0">📩 إرسال الرد</a>
+            </li>
+            <hr />
+            <li>
+              <a routerLink="/ouverture-reclamation" class="nav-link px-0">📂 فتح شكاية </a>
+            </li>
+            <hr />
+            <li>
+              <a routerLink="/cloture-reclamation" class="nav-link px-0">📪 إغلاق شكاية</a>
+            </li>
+            <hr />                        
+          </ul>
+        </li>
+        <hr />
+      </ul>
+    </li>
+
+
+
+    <hr /> <!-- 🚪 تسجيل الخروج -->
+    <li>
+      <a (click)="logout()" class="nav-link px-0">
+        <i class="bi bi-box-arrow-right"></i> 
+        <span class="me-1 d-none d-sm-inline">🚪 تسجيل الخروج  </span>
+      </a>
+    </li>
+  </ul>
+</nav>

@@ -1,0 +1,22 @@
+<div class="container">
+    <h2>Liste des Réclamations</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nom Complet</th>
+          <th>CIN</th>
+          <th>Objet</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reclamation of reclamations; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ reclamation.nomComplet }}</td>
+          <td>{{ reclamation.cin }}</td>
+          <td>{{ reclamation.objetChikaya }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

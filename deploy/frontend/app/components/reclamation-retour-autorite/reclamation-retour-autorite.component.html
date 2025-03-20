@@ -1,0 +1,101 @@
+<div class="container">
+  <h2>تلقي الرد من السلطة</h2>
+  
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>تاريخ الإيداع</th>
+        <th>رقم التسجيل</th>
+        <th>المعرف</th>
+        <th>الاسم الكامل</th>
+        <th>مصدر الشكاية</th>
+        <th>نوع الشكاية</th>
+        <th>موضوع الشكاية</th>
+        <th>تعليمات المحافظ</th>
+        <th>نوع الطلب</th>
+        <th>المُرسَل إليه</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let rec of reclamations">
+        <!-- Ligne Master -->
+        <tr class="master-row">
+          <td>{{ rec.id }}</td>
+          <td>{{ rec.dateDepot | date:'dd/MM/yyyy' }}</td>
+          <td>{{ rec.numInscription }}</td>
+          <td>{{ rec.identifiant }}</td>
+          <td>{{ rec.nomComplet }}</td>
+          <td>{{ rec.sourceReclamation?.nomLangue2 }}</td>
+          <td>{{ rec.typeReclamation?.nomLangue2 }}</td>
+          <td>{{ rec.objetReclamation }}</td>
+          <td>{{ rec.instructionsGouverneur }}</td>
+          <td>{{ rec.typeRequete?.nomLangue2 }}</td>
+          <td>{{ rec.destinataire }}</td>
+        </tr>
+        <!-- Ligne détail sous la ligne master -->
+        <tr class="detail-row" *ngIf="rec.details && rec.details.length > 0">
+          <td colspan="11" class="pl-5">
+            <table class="table table-sm table-bordered">
+              <thead>
+                <tr>
+                  <th>ID Détail</th>
+                  <th>نوع الجهة</th>
+                  <th>مرجع إرسال السلطة</th>
+                  <th>تاريخ الإرسال إلى السلطة</th>
+                  <th>رد السلطة</th>
+                  <th>الإجراءات</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let det of rec.details">
+                  <td>{{ det.id }}</td>
+                  <td>{{ det.typeDestinataire?.nomLangue2 }}</td>
+                  <td>{{ det.referenceEnvoiAutorite }}</td>
+                  <td>{{ det.dateEnvoiAutorite | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ det.flagRetourAutorite === 1 ? 'نعم' : 'لا' }}</td>
+                  <td>
+                    <!-- Bouton "Retour" adossé à la ligne détail -->
+                    <button class="btn btn-primary btn-sm" (click)="openModalForDetail(det, rec)" title="Retour Autorité">تسجيل الرد</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+  
+  <!-- Modal pour saisir les informations de retour pour un détail spécifique -->
+  <div class="modal fade" id="retourAutoriteModal" tabindex="-1" role="dialog" aria-labelledby="retourAutoriteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="retourAutoriteModalLabel">تلقي الرد من السلطة</h5>
+          <button type="button" class="close" (click)="cancel()" aria-label="Fermer">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Saisie de la référence -->
+          <div class="form-group mt-2">
+            <label for="referenceRetourInput">المرجع</label>
+            <input type="text" id="referenceRetourInput" class="form-control" [(ngModel)]="referenceRetour" name="referenceRetour">
+          </div>
+          <!-- Saisie de la date de retour -->
+          <div class="form-group mt-2">
+            <label for="dateRetourAutorite">تاريخ رد السلطة</label>
+            <input type="date" id="dateRetourAutorite" class="form-control" [(ngModel)]="dateRetourAutorite" name="dateRetourAutorite" dir="rtl">
+          </div>
+          <!-- Message d'information -->
+          <div *ngIf="message" class="alert alert-info mt-2">{{ message }}</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cancel()">إلغاء</button>
+          <button type="button" class="btn btn-primary" (click)="submitRetour()">تأكيد</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
